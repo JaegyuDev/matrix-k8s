@@ -9,13 +9,20 @@ spec:
   ingressClassName: nginx
   tls:
     - hosts:
-        - yourdomain.com
+        - jaegyu.dev
       secretName: synapse-tls
   rules:
-    - host: yourdomain.com
+    - host: jaegyu.dev
       http:
         paths:
           - path: /.well-known
+            pathType: Prefix
+            backend:
+              service:
+                name: synapse
+                port:
+                  number: 80
+          - path: /_matrix
             pathType: Prefix
             backend:
               service:
