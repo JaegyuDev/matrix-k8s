@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: synapse
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: synapse
+  template:
+    metadata:
+      labels:
+        app: synapse
+    spec:
+      containers:
+        - name: synapse
+          image: matrixdotorg/synapse:latest
+          env:
+            - name: SYNAPSE_SERVER_NAME
+              value: "jaegyu.dev"
+            - name: SYNAPSE_REPORT_STATS
+              value: "no"
+          ports:
+            - containerPort: 8008
+          volumeMounts:
+            - name: synapse-data
+              mountPath: /data
+      volumes:
+        - name: synapse-data
+          persistentVolumeClaim:
+            claimName: synapse-pvc
